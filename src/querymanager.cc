@@ -240,7 +240,7 @@ bool StringFormat(char *Dest, int DestCapacity, const char *Format, ...){
 }
 
 bool StringFormatTime(char *Dest, int DestCapacity, const char *Format, int Timestamp){
-	struct tm tm = GetLocalTime((int)Timestamp);
+	struct tm tm = GetLocalTime((time_t)Timestamp);
 	int Result = (int)strftime(Dest, DestCapacity, Format, &tm);
 
 	// NOTE(fusion): `strftime` will return ZERO if it's unable to fit the result
@@ -801,7 +801,7 @@ int main(int argc, const char **argv){
 	g_Config.MariaDB.MaxCachedStatements = 100;
 
 	// Connection Config
-	g_Config.QueryManagerPort = 7174;
+	g_Config.QueryManagerPort = 7173;
 	StringBufCopy(g_Config.QueryManagerPassword, "");
 	g_Config.QueryWorkerThreads = 1;
 	g_Config.QueryBufferSize = (int)MB(1);

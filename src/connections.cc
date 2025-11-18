@@ -189,9 +189,9 @@ void CheckConnectionInput(TConnection *Connection, int Events){
 		int ReadSize = Connection->RWSize;
 		if(ReadSize == 0){
 			if(Connection->RWPosition < 2){
-				ReadSize = 2 - Connection->RWPosition;
+				ReadSize = 2;
 			}else{
-				ReadSize = 6 - Connection->RWPosition;
+				ReadSize = 6;
 			}
 			ASSERT(ReadSize > 0);
 		}
@@ -392,7 +392,8 @@ void CheckConnectionQueryRequest(TConnection *Connection){
 			SendQueryFailed(Connection);
 		}
 	}else if(Connection->ApplicationType == APPLICATION_TYPE_LOGIN){
-		if(QueryType == QUERY_LOGIN_ACCOUNT){
+		// TODO(fusion): Probably have a custom query for querying world status?
+		if(QueryType == QUERY_LOGIN_ACCOUNT || QueryType == QUERY_GET_WORLDS){
 			ProcessQuery(Connection);
 		}else{
 			LOG_ERR("Invalid LOGIN query %d (%s) from %s",
@@ -599,7 +600,7 @@ void ProcessConnections(void){
 	}
 
 	for(int i = 0; i < g_Config.MaxConnections; i += 1){
-		if(g_Connections[i].State == CONNECTION_FREE || g_Connections[i].Socket == -1){
+		if(g_Connections[i].State == CONNECTION_FREE){
 			continue;
 		}
 
